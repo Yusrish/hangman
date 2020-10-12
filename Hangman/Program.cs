@@ -8,18 +8,23 @@ namespace Hangman
         static void Main(string[] args)
         {
 
-            var wrongLetter = new char[10];
-            string rightAnswer = "MAURITZ";
-            char[] rightAswerA = new char[rightAnswer.Length]; 
+            
+            string rightAnswer = "MAMMA";
             int numberOfGuesses = 10;
-            char[] rightGuesses = new char[] {'_','_','_','_','_','_','_'};
+            char[] rightAswerA = new char[rightAnswer.Length];
+            var guessedLetter = new char[numberOfGuesses + rightAswerA.Length];
+            int numberOfGuessesAll = 0;
+
+            char[] rightGuesses = new char[rightAnswer.Length];
 
             bool correctGuess = false;
             char guess;
 
             rightAswerA = rightAnswer.ToCharArray();
-
-            
+            for (int i = 0; i < rightAswerA.Length; i++)
+            {
+                rightGuesses[i] = '_';           
+            }   
             
 
             do
@@ -30,24 +35,41 @@ namespace Hangman
                 }
                 Console.WriteLine();
                 Console.WriteLine("Enter your guess: ");
-                guess = char.Parse(Console.ReadLine());
+                guess = char.Parse(Console.ReadLine().ToUpper());
                 if (rightAnswer.Contains(guess))
                 {
-                    rightGuesses[rightAnswer.IndexOf(guess)] = guess;
+                    for (int i = 0; i < rightAswerA.Length; i++)
+                    {
+                        if (rightAswerA[i] == guess)
+                            rightGuesses[i] = guess;
+                    }                  
+                    
                     Console.WriteLine($"{guess} is correct");
                 }
 
                 else
                 {
-                    wrongLetter[numberOfGuesses -1] = guess;
                     Console.WriteLine($"{guess} is wrong");
                     numberOfGuesses--;
 
                 }
+                guessedLetter[numberOfGuessesAll] = guess;
+                numberOfGuessesAll++;
+
                 Console.WriteLine($"You have {numberOfGuesses} guesses left");
+                foreach (var item in guessedLetter)
+                {
+                    Console.Write(item + " ");
+                }
+                Console.WriteLine();
                 if (rightAswerA.SequenceEqual(rightGuesses))
                 {
                     correctGuess = true;
+                    foreach (var item in rightGuesses)
+                    {
+                        Console.Write(item + " ");
+                    }
+                    Console.WriteLine();
                     Console.WriteLine("You win");
 
                 }
