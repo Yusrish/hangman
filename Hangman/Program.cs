@@ -43,7 +43,9 @@ namespace Hangman
                 
                 if (!result) {
                     Console.WriteLine("Invalid input");
+                    Console.Clear();
                     continue;
+                    
                 }
 
                 else if (rightAnswer.Contains(guess))
@@ -66,6 +68,7 @@ namespace Hangman
                 guessedLetter[numberOfGuessesAll] = guess;
                 numberOfGuessesAll++;
 
+                Console.Clear();
                 Console.WriteLine($"You have {numberOfGuesses} guesses left");
                 foreach (var item in guessedLetter)
                 {
