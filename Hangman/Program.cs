@@ -26,6 +26,8 @@ namespace Hangman
                 rightGuesses[i] = '_';           
             }   
             
+            
+
 
             do
             {
@@ -35,8 +37,16 @@ namespace Hangman
                 }
                 Console.WriteLine();
                 Console.WriteLine("Enter your guess: ");
+                                
                 guess = char.Parse(Console.ReadLine().ToUpper());
-                if (rightAnswer.Contains(guess))
+                var result = char.IsLetter(guess);
+                
+                if (!result) {
+                    Console.WriteLine("Invalid input");
+                    continue;
+                }
+
+                else if (rightAnswer.Contains(guess))
                 {
                     for (int i = 0; i < rightAswerA.Length; i++)
                     {
@@ -76,6 +86,8 @@ namespace Hangman
                 
 
             } while (numberOfGuesses > 0 && correctGuess==false);
-        }
+        
+            
+            }
     }
 }
