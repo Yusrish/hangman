@@ -5,20 +5,43 @@ namespace Hangman
 {
     class Program
     {
-        static void Main(string[] args)
-        {
 
+        // todo: template (+ en metod 1-5 rader lång)
+
+        //static void Main(string[] args)
+        //{
+        //    // En rad kod
+
+        //    while(...)
+        //    {
+        //        // Typ fyra rader kod
+        //    }
+
+        //}
+
+
+        static void Main2(string[] args)
+        {
+            /*
+             todo:
+
+             - fyllde i flera bokstäver i input
+             - viss justering i gränsnittet (+färger)
+             - konstigt tecken => invalid guess
+             - gissa på samma bokstav flera gånger => visa bara en gång
+             
+             */
             
             string rightAnswer = "MAMMA";
             int numberOfGuesses = 10;
-            char[] rightAswerA = new char[rightAnswer.Length];
+            char[] rightAswerA = new char[rightAnswer.Length]; // todo: namngivning
             var guessedLetter = new char[numberOfGuesses + rightAswerA.Length];
             int numberOfGuessesAll = 0;
 
             char[] rightGuesses = new char[rightAnswer.Length];
 
             bool correctGuess = false;
-            char guess;
+            char guess; // todo: låt varablerna dö snabbt
 
             rightAswerA = rightAnswer.ToCharArray();
             for (int i = 0; i < rightAswerA.Length; i++)
@@ -90,7 +113,6 @@ namespace Hangman
 
             } while (numberOfGuesses > 0 && correctGuess==false);
         
-            
             }
     }
 }
