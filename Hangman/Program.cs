@@ -20,7 +20,7 @@ namespace Hangman
         //}
 
 
-        static void Main2(string[] args)
+        static void Main(string[] args)
         {
             /*
              todo:
@@ -31,60 +31,62 @@ namespace Hangman
              - gissa på samma bokstav flera gånger => visa bara en gång
              
              */
-            
+
             string rightAnswer = "MAMMA";
             int numberOfGuesses = 10;
             char[] rightAswerA = new char[rightAnswer.Length]; // todo: namngivning
             var guessedLetter = new char[numberOfGuesses + rightAswerA.Length];
             int numberOfGuessesAll = 0;
+            
 
             char[] rightGuesses = new char[rightAnswer.Length];
 
             bool correctGuess = false;
-            char guess; // todo: låt varablerna dö snabbt
+            //char guess; // todo: låt varablerna dö snabbt
 
             rightAswerA = rightAnswer.ToCharArray();
             for (int i = 0; i < rightAswerA.Length; i++)
             {
-                rightGuesses[i] = '_';           
-            }   
-            
-            
-
+                rightGuesses[i] = '_';
+            }
 
             do
             {
-                foreach (var item in rightGuesses)
-                {
-                    Console.Write(item + " ");
-                }
-                Console.WriteLine();
+
+                PrintGuesses(rightGuesses);
+                Console.WriteLine("\n");
                 Console.WriteLine("Enter your guess: ");
-                                
-                guess = char.Parse(Console.ReadLine().ToUpper());
-                var result = char.IsLetter(guess);
+
+                string input = Console.ReadLine().ToUpper();  // steg 1
                 
-                if (!result) {
-                    Console.WriteLine("Invalid input");
-                    Console.Clear();
-                    continue;
-                    
+
+                while (!CheckInputLength(input)) {
+                    input = Console.ReadLine().ToUpper();
+                }
+                char guess = char.Parse(input);
+                var result = char.IsLetter(guess);
+                while (!CheckUserInput(input, guessedLetter, guess, result)) {
+                    input = Console.ReadLine().ToUpper();
+                     guess = char.Parse(input);
+                     result = char.IsLetter(guess);
+
                 }
 
-                else if (rightAnswer.Contains(guess))
+
+                if (rightAnswer.Contains(guess))
                 {
                     for (int i = 0; i < rightAswerA.Length; i++)
                     {
                         if (rightAswerA[i] == guess)
                             rightGuesses[i] = guess;
-                    }                  
-                    
-                    Console.WriteLine($"{guess} is correct");
+                    }
+
+
                 }
 
                 else
                 {
-                    Console.WriteLine($"{guess} is wrong");
+                    //Console.WriteLine($"{guess} is wrong");
                     numberOfGuesses--;
 
                 }
@@ -93,26 +95,89 @@ namespace Hangman
 
                 Console.Clear();
                 Console.WriteLine($"You have {numberOfGuesses} guesses left");
+                Console.Write("Your guesses: ");
                 foreach (var item in guessedLetter)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write(item + " ");
                 }
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine();
                 if (rightAswerA.SequenceEqual(rightGuesses))
                 {
                     correctGuess = true;
+                    Console.Write("The hidden word is: ");
+
                     foreach (var item in rightGuesses)
                     {
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write(item + " ");
+                        Console.ForegroundColor = ConsoleColor.White;
                     }
                     Console.WriteLine();
                     Console.WriteLine("You win");
 
                 }
-                
 
-            } while (numberOfGuesses > 0 && correctGuess==false);
-        
+
+            } while (numberOfGuesses > 0 && correctGuess == false);
+
+        }
+
+        public static void PrintGuesses(char[] rightGuesses)
+        {
+
+            foreach (var item in rightGuesses)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(item + " ");
+                Console.ForegroundColor = ConsoleColor.White;
             }
+        }
+
+        public static bool CheckUserInput(string input, char[] guessedLetter, char guess, bool result)
+        {
+            bool isInputCorrect = false;
+            
+
+           
+                if (input.Length != 1)
+                {
+                    Console.WriteLine("Invalid input, enter only one charecter!");
+                }
+
+                else if (!result)
+                {
+                    Console.WriteLine("Invalid input, use letters only!");
+                }
+                else if (guessedLetter.Contains(guess))
+                {
+                    Console.WriteLine("You have already guessed this letter!");
+                }
+                else
+                    isInputCorrect = true;
+
+                
+ 
+            return isInputCorrect;
+
+        }
+        public static bool CheckInputLength(string input)
+        {
+            bool isInputCorrect = false;
+
+            if (input.Length != 1)
+            {
+                Console.WriteLine("Invalid input, enter only one charecter!");
+            }
+
+            else
+                isInputCorrect = true;
+
+
+
+            return isInputCorrect;
+
+        }
     }
 }
