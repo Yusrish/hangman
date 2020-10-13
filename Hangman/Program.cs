@@ -42,7 +42,9 @@ namespace Hangman
 
                 PrintHangman(rightGuesses);
 
-                Console.WriteLine("Enter your guess: ");
+                //Console.WriteLine("Enter your guess: ");
+
+                ReadAndCalculateGuesses(numberOfGuesses, guessedLetter);
 
                 string input = Console.ReadLine().ToUpper();  // steg 1
 
@@ -75,8 +77,9 @@ namespace Hangman
                 numberOfGuessesAll++;
 
                 Console.Clear();
-                Console.WriteLine($"You have {numberOfGuesses} guesses left");
-                PrintYourGuesses(guessedLetter);
+
+                //Console.WriteLine($"You have {numberOfGuesses} guesses left");
+                //PrintYourGuesses(guessedLetter);
                 if (rightAnswerA.SequenceEqual(rightGuesses))
                 {
                     correctGuess = true;
@@ -99,9 +102,13 @@ namespace Hangman
 
         }
 
-        public static void ReadAndCalculateGuesses()
+        public static void ReadAndCalculateGuesses(int numberOfGuesses, char[] guessedLetter)
         {
+            Console.WriteLine($"You have {numberOfGuesses} guesses left");
+            PrintYourGuesses(guessedLetter);
+            Console.WriteLine("Enter your guess: ");
 
+            //string input = Console.ReadLine().ToUpper();
         }
 
         public static void CreateHangman(char[] rightAnswerA, char[] rightGuesses)
