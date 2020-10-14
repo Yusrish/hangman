@@ -11,6 +11,7 @@ namespace Hangman
         static char[] guessedLetters;
         static char[] CurrentHangman;
         static int IndexGuessedLetters = 0;
+        static bool isDone = false;
         static bool isCorrectGuess = false;
         static char CurrentGuess;
 
@@ -35,9 +36,10 @@ namespace Hangman
                 {
                     Console.Write(" Enter your guess: ");
                     input = Console.ReadLine().ToUpper();
-                }
+                }                
                 CurrentGuess = char.Parse(input);
                 UpdatePrintedHangman(CurrentGuess);
+                
 
                 guessedLetters[IndexGuessedLetters] = CurrentGuess;
                 IndexGuessedLetters++;
@@ -45,13 +47,13 @@ namespace Hangman
                 Console.Clear();
                 WinOrLose();
 
-            } while (numberOfGuesses > 0 && !isCorrectGuess);
+            } while (numberOfGuesses > 0 && !isDone);
         }
         public static void WinOrLose()  // Prints out win or lost with the correct word
         {
             if (HiddenWord_Array.SequenceEqual(CurrentHangman))
             {
-                isCorrectGuess = true;
+                isDone = true;
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You win!!");
                 Console.WriteLine();
@@ -60,7 +62,7 @@ namespace Hangman
                 Console.Beep();
                 Console.Beep();
             }
-            if ((!isCorrectGuess) && (numberOfGuesses == 0))
+            if ((!isDone) && (numberOfGuesses == 0))
             {
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You lost");
@@ -138,8 +140,7 @@ namespace Hangman
         {
             if (input.Length != 1)
             {
-                Console.Beep();
-                Console.WriteLine(" Invalid input, enter only one character!");
+                PrintInvalidMessage(1);                             
                 return false;
             }
             char ParsedGuess = char.Parse(input);
@@ -147,17 +148,34 @@ namespace Hangman
 
             if (!IsLetter)
             {
-                Console.Beep();
-                Console.WriteLine(" Invalid input, use letters only!");
+                PrintInvalidMessage(2);
                 return false;
             }
             if (guessedLetter.Contains(ParsedGuess))
             {
-                Console.Beep();
-                Console.WriteLine(" You have already guessed this letter!");
+                PrintInvalidMessage(3);                
                 return false;
             }
             return true;
+        }
+
+        public static void PrintInvalidMessage(int type)
+        {
+            switch(type)
+            {
+                case 1:
+                    Console.Beep();
+                    Console.WriteLine(" Invalid input, enter only one character!");
+                    break;
+                case 2:
+                    Console.Beep();
+                    Console.WriteLine(" Invalid input, use letters only!");
+                    break;
+                case 3:
+                    Console.Beep();
+                    Console.WriteLine(" You have already guessed this letter!");
+                    break;
+            }
         }
     }
 }
