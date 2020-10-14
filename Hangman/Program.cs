@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Hangman
@@ -17,52 +18,89 @@ namespace Hangman
 
         static void Main(string[] args)
         {
-            Console.Title = "Hangman - By Team 1";
-            Console.SetCursorPosition(10, 2);
-            HiddenWord_Array = new char[HiddenWord.Length]; 
-            guessedLetters = new char[numberOfGuesses + HiddenWord_Array.Length];
-            CurrentHangman = new char[HiddenWord_Array.Length];
-            HiddenWord_Array = HiddenWord.ToCharArray();
 
-            CreateHangman(HiddenWord_Array, CurrentHangman);
-            do
+            var h = new Hangman("MAMMAS", 3);
+            h.CreateHangman();
+
+            while (!isDone)
             {
-                Console.SetCursorPosition(10, 2);
-                PrintHangman(CurrentHangman);
-                ReadAndCalculateGuesses(numberOfGuesses, guessedLetters);
-                string input = Console.ReadLine().ToUpper();
+                Console.Write(" Enter your guess: ");
+                GuessResult result = h.Guess(Console.ReadLine().ToUpper());
 
-                while (!CheckUserInput(input, guessedLetters))
+                if (result == GuessResult.InvalidGuess ||
+                    result == GuessResult.IncorrectGuess ||
+                    result == GuessResult.AlreadyGuessed)
                 {
-                    Console.Write(" Enter your guess: ");
-                    input = Console.ReadLine().ToUpper();
-                }                
-                CurrentGuess = char.Parse(input);
-                UpdatePrintedHangman(CurrentGuess);
-                
+                    PrintInvalidMessage(result);
+                    continue;
+                }
+                PrintHangman(h.getCurrentHangman());
+                WinOrLose(h);
+            }
+            
 
-                guessedLetters[IndexGuessedLetters] = CurrentGuess;
-                IndexGuessedLetters++;
 
-                Console.Clear();
-                WinOrLose();
+            /*
+            Console.WriteLine($"Resultatet blev {result}");
+            
+            result = h.Guess("A");
 
-            } while (numberOfGuesses > 0 && !isDone);
+            Console.WriteLine($"Resultatet blev {result}");
+
+            result = h.Guess("A");
+
+            Console.WriteLine($"Resultatet blev {result}");
+
+            result = h.Guess("f");
+
+            Console.WriteLine($"Resultatet blev {result}"); */
+
+            //Console.Title = "Hangman - By Team 1";
+            //Console.SetCursorPosition(10, 2);
+            //HiddenWord_Array = new char[HiddenWord.Length]; 
+            //guessedLetters = new char[numberOfGuesses + HiddenWord_Array.Length];
+            //CurrentHangman = new char[HiddenWord_Array.Length];
+            //HiddenWord_Array = HiddenWord.ToCharArray();
+
+            //CreateHangman(HiddenWord_Array, CurrentHangman);
+            //do
+            //{
+            //    Console.SetCursorPosition(10, 2);
+            //    PrintHangman(CurrentHangman);
+            //    ReadAndCalculateGuesses(numberOfGuesses, guessedLetters);
+            //    string input = Console.ReadLine().ToUpper();
+
+            //    while (!CheckUserInput(input, guessedLetters))
+            //    {
+            //        Console.Write(" Enter your guess: ");
+            //        input = Console.ReadLine().ToUpper();
+            //    }                
+            //    CurrentGuess = char.Parse(input);
+            //    UpdatePrintedHangman(CurrentGuess);
+
+
+            //    guessedLetters[IndexGuessedLetters] = CurrentGuess;
+            //    IndexGuessedLetters++;
+
+            //    Console.Clear();
+            //    WinOrLose();
+
+            //} while (numberOfGuesses > 0 && !isDone);
         }
-        public static void WinOrLose()  // Prints out win or lost with the correct word
+        public static void WinOrLose(Hangman h)  // Prints out win or lost with the correct word
         {
-            if (HiddenWord_Array.SequenceEqual(CurrentHangman))
+            if (h.CheckWin())
             {
                 isDone = true;
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You win!!");
                 Console.WriteLine();
                 Console.Write(" The hidden word is: ");
-                PrintHangman(CurrentHangman);
+                PrintHangman(h.getCurrentHangman());
                 Console.Beep();
                 Console.Beep();
             }
-            if ((!isDone) && (numberOfGuesses == 0))
+            if ((!isDone) && (h.CheckLoose()))
             {
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You lost");
@@ -77,22 +115,7 @@ namespace Hangman
             }
         }
 
-        public static void UpdatePrintedHangman(char guess)  // replace hangman underscore with correct letters
-        {
-            if (HiddenWord.Contains(guess)) // byter understreck med rätt bokstav
-            {
-                for (int i = 0; i < HiddenWord_Array.Length; i++)
-                {
-                    if (HiddenWord_Array[i] == guess)
-                        CurrentHangman[i] = guess;
-                }
-            }
-            else
-            {
-                numberOfGuesses--;
-            }
-
-        }
+        
 
         public static void ReadAndCalculateGuesses(int numberOfGuesses, char[] guessedLetter)  // Read user input
         {
@@ -103,16 +126,10 @@ namespace Hangman
 
         }
 
-        public static void CreateHangman(char[] rightAnswerA, char[] rightGuesses)   // store correct number of underscores in an array
+        
+        public static void PrintHangman(List<char> l)  // Print out current hangman
         {
-            for (int i = 0; i < rightAnswerA.Length; i++)
-            {
-                rightGuesses[i] = '_';
-            }
-        }
-        public static void PrintHangman(char[] rightGuesses)  // Print out current hangman
-        {
-            foreach (var item in rightGuesses)
+            foreach (var item in l)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write(item + " ");
@@ -135,43 +152,21 @@ namespace Hangman
             Console.WriteLine();
 
         }
+               
 
-        public static bool CheckUserInput(string input, char[] guessedLetter)  // User input validations
-        {
-            if (input.Length != 1)
-            {
-                PrintInvalidMessage(1);                             
-                return false;
-            }
-            char ParsedGuess = char.Parse(input);
-            bool IsLetter = char.IsLetter(ParsedGuess);
-
-            if (!IsLetter)
-            {
-                PrintInvalidMessage(2);
-                return false;
-            }
-            if (guessedLetter.Contains(ParsedGuess))
-            {
-                PrintInvalidMessage(3);                
-                return false;
-            }
-            return true;
-        }
-
-        public static void PrintInvalidMessage(int type)
+        public static void PrintInvalidMessage(GuessResult type)
         {
             switch(type)
             {
-                case 1:
+                case GuessResult.InvalidGuess:
                     Console.Beep();
-                    Console.WriteLine(" Invalid input, enter only one character!");
+                    Console.WriteLine(" Invalid input!");
                     break;
-                case 2:
+                case GuessResult.IncorrectGuess:
                     Console.Beep();
-                    Console.WriteLine(" Invalid input, use letters only!");
+                    Console.WriteLine(" Incorrect guess!");
                     break;
-                case 3:
+                case GuessResult.AlreadyGuessed:
                     Console.Beep();
                     Console.WriteLine(" You have already guessed this letter!");
                     break;
