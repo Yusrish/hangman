@@ -5,120 +5,110 @@ namespace Hangman
 {
     class Program
     {
-
-        // todo: template (+ en metod 1-5 rader lång)
-
-        //static void Main(string[] args)
-        //{
-        //    // En rad kod
-
-        //    while(...)
-        //    {
-        //        // Typ fyra rader kod
-        //    }
-
-        //}
-
+        static string HiddenWord = "MAMMA";
+        static char[] HiddenWord_Array;
+        static int numberOfGuesses = 10;
+        static char[] guessedLetters;
+        static char[] CurrentHangman;
+        static int IndexGuessedLetters = 0;
+        static bool isCorrectGuess = false;
+        static char CurrentGuess;
 
         static void Main(string[] args)
         {
+            Console.Title = "Hangman - By Team 1";
+            Console.SetCursorPosition(10, 2);
+            HiddenWord_Array = new char[HiddenWord.Length]; 
+            guessedLetters = new char[numberOfGuesses + HiddenWord_Array.Length];
+            CurrentHangman = new char[HiddenWord_Array.Length];
+            HiddenWord_Array = HiddenWord.ToCharArray();
 
-            string rightAnswer = "MAMMA";
-            int numberOfGuesses = 10;
-            char[] rightAnswerA = new char[rightAnswer.Length]; // todo: namngivning
-            var guessedLetter = new char[numberOfGuesses + rightAnswerA.Length];
-            int numberOfGuessesAll = 0;
-
-
-            char[] rightGuesses = new char[rightAnswer.Length];
-
-            bool correctGuess = false;
-
-            rightAnswerA = rightAnswer.ToCharArray();
-            CreateHangman(rightAnswerA, rightGuesses);
-
+            CreateHangman(HiddenWord_Array, CurrentHangman);
             do
             {
+                Console.SetCursorPosition(10, 2);
+                PrintHangman(CurrentHangman);
+                ReadAndCalculateGuesses(numberOfGuesses, guessedLetters);
+                string input = Console.ReadLine().ToUpper();
 
-                PrintHangman(rightGuesses);
-
-                //Console.WriteLine("Enter your guess: ");
-
-                ReadAndCalculateGuesses(numberOfGuesses, guessedLetter);
-
-                string input = Console.ReadLine().ToUpper();  // steg 1
-
-
-                while (!CheckUserInput(input, guessedLetter))
+                while (!CheckUserInput(input, guessedLetters))
                 {
+                    Console.Write(" Enter your guess: ");
                     input = Console.ReadLine().ToUpper();
-
                 }
-                char guess = char.Parse(input);
+                CurrentGuess = char.Parse(input);
+                UpdatePrintedHangman(CurrentGuess);
 
-                if (rightAnswer.Contains(guess))
-                {
-                    for (int i = 0; i < rightAnswerA.Length; i++)
-                    {
-                        if (rightAnswerA[i] == guess)
-                            rightGuesses[i] = guess;
-                    }
-
-
-                }
-
-                else
-                {
-                    //Console.WriteLine($"{guess} is wrong");
-                    numberOfGuesses--;
-
-                }
-                guessedLetter[numberOfGuessesAll] = guess;
-                numberOfGuessesAll++;
+                guessedLetters[IndexGuessedLetters] = CurrentGuess;
+                IndexGuessedLetters++;
 
                 Console.Clear();
+                WinOrLose();
 
-                //Console.WriteLine($"You have {numberOfGuesses} guesses left");
-                //PrintYourGuesses(guessedLetter);
-                if (rightAnswerA.SequenceEqual(rightGuesses))
-                {
-                    correctGuess = true;
-                    Console.Write("The hidden word is: ");
-
-
-                    PrintHangman(rightGuesses);
-
-                    Console.WriteLine();
-                    Console.WriteLine("You win");
-
-                }
-
-
-            } while (numberOfGuesses > 0 && !correctGuess);
-            if (!correctGuess)
+            } while (numberOfGuesses > 0 && !isCorrectGuess);
+        }
+        public static void WinOrLose()  // Prints out win or lost with the correct word
+        {
+            if (HiddenWord_Array.SequenceEqual(CurrentHangman))
             {
+                isCorrectGuess = true;
+                Console.SetCursorPosition(10, 2);
+                Console.WriteLine("You win!!");
+                Console.WriteLine();
+                Console.Write(" The hidden word is: ");
+                PrintHangman(CurrentHangman);
+                Console.Beep();
+                Console.Beep();
+            }
+            if ((!isCorrectGuess) && (numberOfGuesses == 0))
+            {
+                Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You lost");
+                Console.Write("\n The correct word is \"");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(HiddenWord);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("\", better luck next time ;)");
+                Console.WriteLine("\n");
+                Console.Beep();
+                Console.Beep();
+            }
+        }
+
+        public static void UpdatePrintedHangman(char guess)  // replace hangman underscore with correct letters
+        {
+            if (HiddenWord.Contains(guess)) // byter understreck med rätt bokstav
+            {
+                for (int i = 0; i < HiddenWord_Array.Length; i++)
+                {
+                    if (HiddenWord_Array[i] == guess)
+                        CurrentHangman[i] = guess;
+                }
+            }
+            else
+            {
+                numberOfGuesses--;
             }
 
         }
 
-        public static void ReadAndCalculateGuesses(int numberOfGuesses, char[] guessedLetter)
+        public static void ReadAndCalculateGuesses(int numberOfGuesses, char[] guessedLetter)  // Read user input
         {
-            Console.WriteLine($"You have {numberOfGuesses} guesses left");
-            PrintYourGuesses(guessedLetter);
-            Console.WriteLine("Enter your guess: ");
 
-            //string input = Console.ReadLine().ToUpper();
+            Console.WriteLine($" You have {numberOfGuesses} guesses left");
+            PrintYourGuesses(guessedLetter);
+            Console.Write(" Enter your guess: ");
+
         }
 
-        public static void CreateHangman(char[] rightAnswerA, char[] rightGuesses)
+        public static void CreateHangman(char[] rightAnswerA, char[] rightGuesses)   // store correct number of underscores in an array
         {
             for (int i = 0; i < rightAnswerA.Length; i++)
             {
                 rightGuesses[i] = '_';
             }
         }
-        public static void PrintHangman(char[] rightGuesses)
+        public static void PrintHangman(char[] rightGuesses)  // Print out current hangman
         {
             foreach (var item in rightGuesses)
             {
@@ -130,9 +120,9 @@ namespace Hangman
 
         }
 
-        public static void PrintYourGuesses(char[] guessedLetter)
+        public static void PrintYourGuesses(char[] guessedLetter)  // Print out all guesses
         {
-            Console.Write("Your guesses: ");
+            Console.Write(" Your guesses: ");
 
             foreach (var item in guessedLetter)
             {
@@ -144,11 +134,12 @@ namespace Hangman
 
         }
 
-        public static bool CheckUserInput(string input, char[] guessedLetter)
+        public static bool CheckUserInput(string input, char[] guessedLetter)  // User input validations
         {
             if (input.Length != 1)
             {
-                Console.WriteLine("Invalid input, enter only one character!");
+                Console.Beep();
+                Console.WriteLine(" Invalid input, enter only one character!");
                 return false;
             }
             char ParsedGuess = char.Parse(input);
@@ -156,16 +147,17 @@ namespace Hangman
 
             if (!IsLetter)
             {
-                Console.WriteLine("Invalid input, use letters only!");
+                Console.Beep();
+                Console.WriteLine(" Invalid input, use letters only!");
                 return false;
             }
             if (guessedLetter.Contains(ParsedGuess))
             {
-                Console.WriteLine("You have already guessed this letter!");
+                Console.Beep();
+                Console.WriteLine(" You have already guessed this letter!");
                 return false;
             }
             return true;
         }
-
     }
 }
