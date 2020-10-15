@@ -13,18 +13,19 @@ namespace Hangman
         static char[] guessedLetters;
         static char[] CurrentHangman;
         static int IndexGuessedLetters = 0;
-        static bool hasWon = false;
+        static bool GameOver = false;
         static bool isCorrectGuess = false;
         static char CurrentGuess;
 
         static void Main(string[] args)
         {
 
-            var h = new Hangman("MAMMAS", 3);
+            var h = new Hangman("MAMMAS", 6);
             h.CreateCurrentHangman();
+            PrintHangman(h.getCurrentHangman());
+            PrintGuessesLeft(h.getNrOfGuesses());
 
-            
-            while (!hasWon)
+            while (!GameOver)
             {
                 Console.Write(" Enter your guess: ");
                 GuessResult result = h.Guess(Console.ReadLine().ToUpper());
@@ -53,7 +54,7 @@ namespace Hangman
         {
             if (h.CheckWin())
             {
-                hasWon = true;
+                GameOver = true;
                 Console.Clear();
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You win!!");
@@ -64,8 +65,9 @@ namespace Hangman
                 Console.Beep();
             }
             //Group5 - isDone is not changed from false so will always be false. it shoudld be enough with "checkLoose"
-            if ((!hasWon) && (h.CheckLoose()))
+            if ((!GameOver) && (h.CheckLoose()))
             {
+                GameOver = true;
                 Console.Clear();
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You lost");

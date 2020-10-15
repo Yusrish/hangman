@@ -44,7 +44,7 @@ namespace Hangman
         }
         public GuessResult Guess(string guess)
         {
-
+            _numberOfGuesses--;
             if (!IsValid(guess))
             {
                 return GuessResult.InvalidGuess;
@@ -54,8 +54,7 @@ namespace Hangman
                 return GuessResult.AlreadyGuessed;
 
             if (_secretWord.Contains(parsedGuess))
-            {
-                //
+            {                
                 _guessedLetters.Add(parsedGuess);
                 UpdateCurrentHangman(parsedGuess);
                 return GuessResult.CorrectGuess;
@@ -72,12 +71,7 @@ namespace Hangman
                     if (_secretWord_Array[i] == guess)
                         _currentHangman[i] = guess;
                 }
-            }
-            else
-            {
-                _numberOfGuesses--;
-            }
-
+            }            
         }
 
         private bool IsValid(string guess)
