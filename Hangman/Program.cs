@@ -13,8 +13,7 @@ namespace Hangman
         static char[] guessedLetters;
         static char[] CurrentHangman;
         static int IndexGuessedLetters = 0;
-        //Group5 - could be a clearer naming for the bool isDone
-        static bool isDone = false;
+        static bool hasWon = false;
         static bool isCorrectGuess = false;
         static char CurrentGuess;
 
@@ -22,10 +21,10 @@ namespace Hangman
         {
 
             var h = new Hangman("MAMMAS", 3);
-            h.CreateHangman();
+            h.CreateCurrentHangman();
 
             
-            while (!isDone)
+            while (!hasWon)
             {
                 Console.Write(" Enter your guess: ");
                 GuessResult result = h.Guess(Console.ReadLine().ToUpper());
@@ -35,67 +34,27 @@ namespace Hangman
                     result == GuessResult.AlreadyGuessed)
                 {
                     PrintInvalidMessage(result);
-                    continue;
+                    PrintGuessesLeft(h.getNrOfGuesses());
+                    
                 }
+                else { 
                 PrintHangman(h.getCurrentHangman());
+                PrintGuessesLeft(h.getNrOfGuesses());
+                
+                }
                 WinOrLose(h);
             }
             
 
 
-            /*
-            Console.WriteLine($"Resultatet blev {result}");
             
-            result = h.Guess("A");
-
-            Console.WriteLine($"Resultatet blev {result}");
-
-            result = h.Guess("A");
-
-            Console.WriteLine($"Resultatet blev {result}");
-
-            result = h.Guess("f");
-
-            Console.WriteLine($"Resultatet blev {result}"); */
-
-            //Console.Title = "Hangman - By Team 1";
-            //Console.SetCursorPosition(10, 2);
-            //HiddenWord_Array = new char[HiddenWord.Length]; 
-            //guessedLetters = new char[numberOfGuesses + HiddenWord_Array.Length];
-            //CurrentHangman = new char[HiddenWord_Array.Length];
-            //HiddenWord_Array = HiddenWord.ToCharArray();
-
-            //CreateHangman(HiddenWord_Array, CurrentHangman);
-            //do
-            //{
-            //    Console.SetCursorPosition(10, 2);
-            //    PrintHangman(CurrentHangman);
-            //    ReadAndCalculateGuesses(numberOfGuesses, guessedLetters);
-            //    string input = Console.ReadLine().ToUpper();
-
-            //    while (!CheckUserInput(input, guessedLetters))
-            //    {
-            //        Console.Write(" Enter your guess: ");
-            //        input = Console.ReadLine().ToUpper();
-            //    }                
-            //    CurrentGuess = char.Parse(input);
-            //    UpdatePrintedHangman(CurrentGuess);
-
-
-            //    guessedLetters[IndexGuessedLetters] = CurrentGuess;
-            //    IndexGuessedLetters++;
-
-            //    Console.Clear();
-            //    WinOrLose();
-
-            //} while (numberOfGuesses > 0 && !isDone);
         }
         public static void WinOrLose(Hangman h)  // Prints out win or lost with the correct word
         {
             if (h.CheckWin())
             {
-                isDone = true;
-                //Group5 - Add a Console.Clear(); here for a nicer looking win page
+                hasWon = true;
+                Console.Clear();
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You win!!");
                 Console.WriteLine();
@@ -105,15 +64,14 @@ namespace Hangman
                 Console.Beep();
             }
             //Group5 - isDone is not changed from false so will always be false. it shoudld be enough with "checkLoose"
-            if ((!isDone) && (h.CheckLoose()))
+            if ((!hasWon) && (h.CheckLoose()))
             {
-                //Group5 - Add a Console.Clear(); here for a nicer looking loose page
+                Console.Clear();
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You lost");
                 Console.Write("\n The correct word is \"");
                 Console.ForegroundColor = ConsoleColor.Green;
-                //group5 -  (Bug) replace HiddenWord with h.getSecretWord
-                Console.Write(HiddenWord);
+                Console.Write(h.getSecretWord());
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("\", better luck next time ;)");
                 Console.WriteLine("\n");
@@ -123,20 +81,18 @@ namespace Hangman
         }
 
         
-
-        public static void ReadAndCalculateGuesses(int numberOfGuesses, char[] guessedLetter)  // Read user input
+        public static void PrintGuessesLeft(int numberOfGuesses)  // Read user input
         {
 
             Console.WriteLine($" You have {numberOfGuesses} guesses left");
-            PrintYourGuesses(guessedLetter);
-            Console.Write(" Enter your guess: ");
+            //PrintYourGuesses(guessedLetter);
+            //Console.Write(" Enter your guess: ");
 
         }
 
-        //Group5 - clearer naming on list l would be good
-        public static void PrintHangman(List<char> l)  // Print out current hangman
+        public static void PrintHangman(List<char> currentHangman)  // Print out current hangman
         {
-            foreach (var item in l)
+            foreach (var item in currentHangman)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write(item + " ");
@@ -160,21 +116,18 @@ namespace Hangman
 
         }
                
-        //group5 - nice that you added a sound for invalid guesses! Could it be added above switch so you don't have to write it so many times?
         public static void PrintInvalidMessage(GuessResult type)
         {
-            switch(type)
+            Console.Beep();
+            switch (type)
             {
                 case GuessResult.InvalidGuess:
-                    Console.Beep();
                     Console.WriteLine(" Invalid input!");
                     break;
-                case GuessResult.IncorrectGuess:
-                    Console.Beep();
+                case GuessResult.IncorrectGuess:                
                     Console.WriteLine(" Incorrect guess!");
                     break;
-                case GuessResult.AlreadyGuessed:
-                    Console.Beep();
+                case GuessResult.AlreadyGuessed:                
                     Console.WriteLine(" You have already guessed this letter!");
                     break;
             }

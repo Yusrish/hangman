@@ -17,7 +17,6 @@ namespace Hangman
         public Hangman(string secretWord, int nrOfGuesses)
         {
             _secretWord = secretWord;
-            //_secretWord_Array = new char[_secretWord.Length];
             _secretWord_Array = _secretWord.ToCharArray();
             _numberOfGuesses = nrOfGuesses;
             
@@ -35,8 +34,8 @@ namespace Hangman
             return _currentHangman;
         }
 
-        //Group5- CreateHangman. A bit unclear naming of this method and we think that it should be private and be called from the constructor
-        public void CreateHangman()   // store correct number of underscores in an array
+        //Group5- CreateHangman. we think that it should be private and be called from the constructor
+        public void CreateCurrentHangman()   // store correct number of underscores in an array
         {
             for (int i = 0; i < _secretWord.Length; i++)
             {
