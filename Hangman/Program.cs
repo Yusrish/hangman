@@ -35,15 +35,16 @@ namespace Hangman
                     result == GuessResult.AlreadyGuessed)
                 {
                     PrintInvalidMessage(result);
-                    PrintGuessesLeft(h.getNrOfGuesses());
-                    
                 }
                 else { 
-                PrintHangman(h.getCurrentHangman());
-                PrintGuessesLeft(h.getNrOfGuesses());
-                
+                    PrintHangman(h.getCurrentHangman());                                
                 }
                 WinOrLose(h);
+                if (!GameOver)
+                {
+                    PrintGuessesLeft(h.getNrOfGuesses());
+                }
+                
             }
             
 
