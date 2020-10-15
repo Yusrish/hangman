@@ -6,17 +6,8 @@ namespace Hangman
 {
     class Program
     {
-        //Group5 - Clean unused variables
-        static string HiddenWord = "MAMMA";
-        static char[] HiddenWord_Array;
-        static int numberOfGuesses = 10;
-        static char[] guessedLetters;
-        static char[] CurrentHangman;
-        static int IndexGuessedLetters = 0;
         static bool GameOver = false;
-        static bool isCorrectGuess = false;
-        static char CurrentGuess;
-
+        
         static void Main(string[] args)
         {
 
@@ -86,11 +77,7 @@ namespace Hangman
         
         public static void PrintGuessesLeft(int numberOfGuesses)  // Read user input
         {
-
-            Console.WriteLine($" You have {numberOfGuesses} guesses left");
-            //PrintYourGuesses(guessedLetter);
-            //Console.Write(" Enter your guess: ");
-
+            Console.WriteLine($" You have {numberOfGuesses} guesses left");          
         }
 
         public static void PrintHangman(List<char> currentHangman)  // Print out current hangman
