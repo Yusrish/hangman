@@ -6,12 +6,14 @@ namespace Hangman
 {
     class Program
     {
+        //Group5 - Clean unused variables
         static string HiddenWord = "MAMMA";
         static char[] HiddenWord_Array;
         static int numberOfGuesses = 10;
         static char[] guessedLetters;
         static char[] CurrentHangman;
         static int IndexGuessedLetters = 0;
+        //Group5 - could be a clearer naming for the bool isDone
         static bool isDone = false;
         static bool isCorrectGuess = false;
         static char CurrentGuess;
@@ -22,6 +24,7 @@ namespace Hangman
             var h = new Hangman("MAMMAS", 3);
             h.CreateHangman();
 
+            
             while (!isDone)
             {
                 Console.Write(" Enter your guess: ");
@@ -92,6 +95,7 @@ namespace Hangman
             if (h.CheckWin())
             {
                 isDone = true;
+                //Group5 - Add a Console.Clear(); here for a nicer looking win page
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You win!!");
                 Console.WriteLine();
@@ -100,12 +104,15 @@ namespace Hangman
                 Console.Beep();
                 Console.Beep();
             }
+            //Group5 - isDone is not changed from false so will always be false. it shoudld be enough with "checkLoose"
             if ((!isDone) && (h.CheckLoose()))
             {
+                //Group5 - Add a Console.Clear(); here for a nicer looking loose page
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You lost");
                 Console.Write("\n The correct word is \"");
                 Console.ForegroundColor = ConsoleColor.Green;
+                //group5 -  (Bug) replace HiddenWord with h.getSecretWord
                 Console.Write(HiddenWord);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("\", better luck next time ;)");
@@ -126,7 +133,7 @@ namespace Hangman
 
         }
 
-        
+        //Group5 - clearer naming on list l would be good
         public static void PrintHangman(List<char> l)  // Print out current hangman
         {
             foreach (var item in l)
@@ -153,7 +160,7 @@ namespace Hangman
 
         }
                
-
+        //group5 - nice that you added a sound for invalid guesses! Could it be added above switch so you don't have to write it so many times?
         public static void PrintInvalidMessage(GuessResult type)
         {
             switch(type)

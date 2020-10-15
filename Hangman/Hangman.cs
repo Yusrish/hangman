@@ -7,6 +7,7 @@ namespace Hangman
 {
     public class Hangman
     {
+        //Group5 - Do you really need both _secretWord and _secretWord_Array? can you combine these?
         private string _secretWord;
         private char[] _secretWord_Array;
         private int _numberOfGuesses;
@@ -33,6 +34,8 @@ namespace Hangman
         {
             return _currentHangman;
         }
+
+        //Group5- CreateHangman. A bit unclear naming of this method and we think that it should be private and be called from the constructor
         public void CreateHangman()   // store correct number of underscores in an array
         {
             for (int i = 0; i < _secretWord.Length; i++)
@@ -53,6 +56,7 @@ namespace Hangman
 
             if (_secretWord.Contains(parsedGuess))
             {
+                //
                 _guessedLetters.Add(parsedGuess);
                 UpdateCurrentHangman(parsedGuess);
                 return GuessResult.CorrectGuess;
