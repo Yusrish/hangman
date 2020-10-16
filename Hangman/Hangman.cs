@@ -9,10 +9,15 @@ namespace Hangman
     {
         //Group5 - Do you really need both _secretWord and _secretWord_Array? can you combine these?
         private string _secretWord;
-        private char[] _secretWord_Array;
+
+        // OO: You can remove the definition here and move it to "UpdateCurrentHangman"
+        private char[] _secretWord_Array; 
+
         private int _numberOfGuesses;
         private List<char> _guessedLetters = new List<char>();
-        private List<char> _currentHangman = new List<char>();
+
+        //OO: Change name. E.g to "_maskedWord" or similair
+        private List<char> _currentHangman = new List<char>(); 
 
         public Hangman(string secretWord, int nrOfGuesses)
         {
@@ -21,6 +26,7 @@ namespace Hangman
             _numberOfGuesses = nrOfGuesses;
             
         }
+        // OO: Naming (GetSecretWord)
         public string getSecretWord()
         {
             return _secretWord;
@@ -44,6 +50,8 @@ namespace Hangman
         }
         public GuessResult Guess(string guess)
         {
+            // OO: Nice method :)
+            // OO: If the guess is Invalid you don't have to punish the user
             _numberOfGuesses--;
             if (!IsValid(guess))
             {

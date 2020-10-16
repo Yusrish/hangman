@@ -8,6 +8,8 @@ namespace Hangman
     {
         static bool GameOver = false;
         
+        // OO: Nice method :)
+        // OO: Your next step is to create tests for Hangman
         static void Main(string[] args)
         {
 
