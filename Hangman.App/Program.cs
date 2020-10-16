@@ -14,7 +14,7 @@ namespace Hangman
             while (!_gameOver)
             {
                 PrintHangman(h.getCurrentHangman()); 
-                PrintGuessesLeft(h.getNrOfGuesses()); 
+                PrintGuessesLeft(h.NrOfGuesses); 
                 PrintYourGuesses(h.getGuessedLetters()); 
                 PrintMessage(result);                            
                 CollectUserInput();
@@ -65,7 +65,7 @@ namespace Hangman
                 Console.WriteLine("You lost");
                 Console.Write("\n The correct word is \"");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(h.getSecretWord());
+                Console.Write(h.SecretWord);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("\", better luck next time ;)");
                 Console.WriteLine("\n");

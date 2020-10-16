@@ -11,8 +11,7 @@ namespace Hangman
         private List<char> _guessedLetters = new List<char>();
         private List<char> _currentHangman = new List<char>();
         private char parsedGuess;
-        //public string guess;
-
+        
         public Hangman(string secretWord, int nrOfGuesses)
         {
             _secretWord = secretWord;
@@ -20,22 +19,16 @@ namespace Hangman
             _numberOfGuesses = nrOfGuesses;
             CreateCurrentHangman();
         }
-
-        // OO: public string SecretWord { get; }
-        public string getSecretWord()
-        {
-            return _secretWord;
-        }
+                
+        public string SecretWord { get; set; }
 
         public List<char> getGuessedLetters()
         {
             return _guessedLetters;
         }
 
-        public int getNrOfGuesses()
-        {
-            return _numberOfGuesses;
-        }
+        public int NrOfGuesses { get; set; }
+        
 
         public List<char> getCurrentHangman()
         {
