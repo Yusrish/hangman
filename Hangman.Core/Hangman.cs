@@ -37,7 +37,6 @@ namespace Hangman
             return _numberOfGuesses;
         }
         
-
         public List<char> getCurrentHangman()
         {
             return _currentHangman;

@@ -5,13 +5,13 @@ namespace Hangman
 {
     class Program
     {
-        static bool _gameOver = false; 
+        static bool gameOver = false; 
         static GuessResult result;
         static Hangman h = new Hangman("MAMMAS", 6);
         static bool printBlank = true;
         static void Main(string[] args)
         {
-            while (!_gameOver)
+            while (!gameOver)
             {
                 PrintHangman(h.getCurrentHangman()); 
                 PrintGuessesLeft(h.getNrOfGuesses()); 
@@ -46,20 +46,21 @@ namespace Hangman
         {
             if (h.HasWon())
             {
-                _gameOver = true;
+                gameOver = true;
                 Console.Clear();
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You win!!");
                 Console.WriteLine();
                 Console.Write(" The hidden word is: ");
-                PrintHangman(h.getCurrentHangman());
+                Console.Write(h.getSecretWord());
+                Console.WriteLine();
                 Console.Beep();
                 Console.Beep();
             }
             //Group5 - isDone is not changed from false so will always be false. it shoudld be enough with "checkLoose"
-            if ((!_gameOver) && (h.HasLost()))
+            if ((!gameOver) && (h.HasLost()))
             {
-                _gameOver = true;
+                gameOver = true;
                 Console.Clear();
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You lost");

@@ -90,6 +90,6 @@ namespace Hangman.Core.Test
             // Assert
             Assert.AreEqual(true, win);
         }
-        // OO: test för vinst och förslut
+
     }
 }
