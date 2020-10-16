@@ -14,7 +14,7 @@ namespace Hangman
             while (!_gameOver)
             {
                 PrintHangman(h.getCurrentHangman()); 
-                PrintGuessesLeft(h.NrOfGuesses); 
+                PrintGuessesLeft(h.getNrOfGuesses()); 
                 PrintYourGuesses(h.getGuessedLetters()); 
                 PrintMessage(result);                            
                 CollectUserInput();
@@ -44,7 +44,7 @@ namespace Hangman
 
         public static void WinOrLose(Hangman h)  
         {
-            if (h.CheckWin())
+            if (h.HasWon())
             {
                 _gameOver = true;
                 Console.Clear();
@@ -57,7 +57,7 @@ namespace Hangman
                 Console.Beep();
             }
             //Group5 - isDone is not changed from false so will always be false. it shoudld be enough with "checkLoose"
-            if ((!_gameOver) && (h.CheckLoose()))
+            if ((!_gameOver) && (h.HasLost()))
             {
                 _gameOver = true;
                 Console.Clear();
@@ -65,7 +65,7 @@ namespace Hangman
                 Console.WriteLine("You lost");
                 Console.Write("\n The correct word is \"");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(h.SecretWord);
+                Console.Write(h.getSecretWord());
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("\", better luck next time ;)");
                 Console.WriteLine("\n");

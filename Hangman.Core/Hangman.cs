@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Hangman
 {
@@ -11,7 +12,7 @@ namespace Hangman
         private List<char> _guessedLetters = new List<char>();
         private List<char> _currentHangman = new List<char>();
         private char parsedGuess;
-        
+
         public Hangman(string secretWord, int nrOfGuesses)
         {
             _secretWord = secretWord;
@@ -19,15 +20,23 @@ namespace Hangman
             _numberOfGuesses = nrOfGuesses;
             CreateCurrentHangman();
         }
-                
-        public string SecretWord { get; set; }
+
+        //public string SecretWord { get; set; }
+        public string getSecretWord()
+        {
+            return _secretWord;
+        }
+        
 
         public List<char> getGuessedLetters()
         {
             return _guessedLetters;
         }
 
-        public int NrOfGuesses { get; set; }
+        public int getNrOfGuesses()
+        {
+            return _numberOfGuesses;
+        }
         
 
         public List<char> getCurrentHangman()
@@ -37,7 +46,7 @@ namespace Hangman
 
         // OO: Namngivning
         //Group5- CreateHangman. we think that it should be private and be called from the constructor
-        public void CreateCurrentHangman()   
+        private void CreateCurrentHangman()   
         {
             for (int i = 0; i < _secretWord.Length; i++)
             {
@@ -96,7 +105,7 @@ namespace Hangman
 
 
         // OO: e.g "HasWon"
-        public bool CheckWin()
+        public bool HasWon()
         {
             if (!_currentHangman.Contains('_'))
                 return true;
@@ -104,7 +113,7 @@ namespace Hangman
                 return false;
         }
 
-        public bool CheckLoose()
+        public bool HasLost()
         {
             if (_currentHangman.Contains('_') && _numberOfGuesses == 0)
                 return true;
