@@ -1,7 +1,4 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Hangman
 {
@@ -21,8 +18,9 @@ namespace Hangman
             _secretWord = secretWord;
             _secretWord_Array = _secretWord.ToCharArray();
             _numberOfGuesses = nrOfGuesses;
-            
+            CreateCurrentHangman();
         }
+
         public string getSecretWord()
         {
             return _secretWord;
@@ -32,26 +30,28 @@ namespace Hangman
         {
             return _guessedLetters;
         }
+
         public int getNrOfGuesses()
         {
             return _numberOfGuesses;
         }
+
         public List<char> getCurrentHangman()
         {
             return _currentHangman;
         }
 
         //Group5- CreateHangman. we think that it should be private and be called from the constructor
-        public void CreateCurrentHangman()   // store correct number of underscores in an array
+        public void CreateCurrentHangman()   
         {
             for (int i = 0; i < _secretWord.Length; i++)
             {
                 _currentHangman.Add('_');
             }
         }
+
         public GuessResult Guess(string guess)
-        {
-            
+        {   
             if (!IsValid(guess))
             {
                 return GuessResult.InvalidGuess;
@@ -60,7 +60,7 @@ namespace Hangman
             if (_guessedLetters.Contains(parsedGuess))
                 return GuessResult.AlreadyGuessed;
 
-            if (_secretWord.Contains(parsedGuess))
+            if (_secretWord.Contains(parsedGuess.ToString()))
             {                
                 _guessedLetters.Add(parsedGuess);
                 UpdateCurrentHangman(parsedGuess);
@@ -71,21 +71,20 @@ namespace Hangman
             return GuessResult.IncorrectGuess;            
         }
 
-        private void UpdateCurrentHangman(char guess)  // replace hangman underscore with correct letters
+        private void UpdateCurrentHangman(char parsedGuess)  
         {
-            if (_secretWord.Contains(guess)) // byter understreck med rätt bokstav
+            if (_secretWord.Contains(parsedGuess.ToString())) 
             {
                 for (int i = 0; i < _secretWord_Array.Length; i++)
                 {
-                    if (_secretWord_Array[i] == guess)
-                        _currentHangman[i] = guess;
+                    if (_secretWord_Array[i] == parsedGuess)
+                        _currentHangman[i] = parsedGuess;
                 }
             }            
         }
 
         private bool IsValid(string guess)
         {
-            // Mste vara ett tecken och korrekt
             if (guess.Length != 1)
             {
                 return false;
@@ -107,6 +106,7 @@ namespace Hangman
             else
                 return false;
         }
+
         public bool CheckLoose()
         {
             if (_currentHangman.Contains('_') && _numberOfGuesses == 0)

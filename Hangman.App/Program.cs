@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Hangman
 {
@@ -8,45 +7,25 @@ namespace Hangman
     {
         static bool GameOver = false;
         static GuessResult result;
-        static Hangman h = new Hangman("MAMMAS", 10);
+        static Hangman h = new Hangman("MAMMAS", 6);
         static bool printBlank = true;
         static void Main(string[] args)
         {
-
-            
-            h.CreateCurrentHangman();
-            
-            //PrintHangman(h.getCurrentHangman());
-            //PrintGuessesLeft(h.getNrOfGuesses());
-
             while (!GameOver)
             {
-                // Nytt yusri
+                Console.Title = "Hangman - [TEAM 1]";
                 Console.SetCursorPosition(6, 2);
-                PrintHangman(h.getCurrentHangman()); //     -------
-                PrintGuessesLeft(h.getNrOfGuesses()); // gissningar kvar
-                PrintYourGuesses(h.getGuessedLetters()); // gissade bokstäver
-                Console.Write(" Message: "); 
+                PrintHangman(h.getCurrentHangman()); 
+                PrintGuessesLeft(h.getNrOfGuesses()); 
+                PrintYourGuesses(h.getGuessedLetters()); 
+                Console.Write(" Message: ");
                 PrintMessage(result);
                 Console.Write(" Enter your guess: ");
-                
-                 result = h.Guess(Console.ReadLine().ToUpper());
-                //PrintMessage(result);
+                result = h.Guess(Console.ReadLine().ToUpper());
                 Console.Clear();
-
                 WinOrLose(h);
-                //if (!GameOver)
-                //{
-                //    PrintGuessesLeft(h.getNrOfGuesses());
-                //}
-
             }
-
-
-
-
         }
-
         // Yusri- Kan flyttas till core.
         public static bool ValidationCheck(GuessResult result)
         {
@@ -59,7 +38,8 @@ namespace Hangman
             else
                 return false;
         }
-        public static void WinOrLose(Hangman h)  // Prints out win or lost with the correct word
+
+        public static void WinOrLose(Hangman h)  
         {
             if (h.CheckWin())
             {
@@ -91,13 +71,12 @@ namespace Hangman
             }
         }
 
-
-        public static void PrintGuessesLeft(int numberOfGuesses)  // Read user input
+        public static void PrintGuessesLeft(int numberOfGuesses)  
         {
             Console.WriteLine($" You have {numberOfGuesses} guesses left");
         }
 
-        public static void PrintHangman(List<char> currentHangman)  // Print out current hangman
+        public static void PrintHangman(List<char> currentHangman)
         {
             foreach (var item in currentHangman)
             {
@@ -106,21 +85,20 @@ namespace Hangman
             }
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\n");
-
         }
 
-        public static void PrintYourGuesses(List<char> guessedLetter)  // Print out all guesses
+        public static void PrintYourGuesses(List<char> guessedLetter)  
         {
             Console.Write(" Your guesses: ");
-
+            Console.Write("[ ");
+            Console.ForegroundColor = ConsoleColor.Red;
             foreach (char item in guessedLetter)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
+            { 
                 Console.Write(item + " ");
             }
             Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("]");
             Console.WriteLine();
-
         }
 
         public static void PrintInvalidMessage(GuessResult type)
@@ -146,16 +124,14 @@ namespace Hangman
 
         public static void PrintMessage(GuessResult result)
         {
-            
             if (ValidationCheck(result))
             {
                 PrintInvalidMessage(result);
             }
-            
             else if (printBlank)
             {
-                    Console.WriteLine(" ");
-                    printBlank = false;           
+                Console.WriteLine(" ");
+                printBlank = false;
             }
             else
             {
@@ -163,8 +139,6 @@ namespace Hangman
                 Console.WriteLine("Correct guess!");
                 Console.ResetColor();
             }
-
-                
         }
     }
 }

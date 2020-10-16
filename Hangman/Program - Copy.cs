@@ -12,7 +12,7 @@ namespace Hangman_copy
         static char[] CurrentHangman;
         static int IndexGuessedLetters = 0;
         static bool isDone = false;
-        static bool isCorrectGuess = false;
+        //static bool isCorrectGuess = false;
         static char CurrentGuess;
 
         static void Main_copy(string[] args)
