@@ -10,6 +10,9 @@ namespace Hangman
         static GuessResult result;
         static Hangman h = new Hangman("MAMMAS", 10);
         static bool printBlank = true;
+        
+        // OO: Nice method :)
+        // OO: Your next step is to create tests for Hangman
         static void Main(string[] args)
         {
 
