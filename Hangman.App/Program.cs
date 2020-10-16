@@ -5,30 +5,30 @@ namespace Hangman
 {
     class Program
     {
-        static bool GameOver = false; // OO: _gameOver
+        static bool _gameOver = false; 
         static GuessResult result;
         static Hangman h = new Hangman("MAMMAS", 6);
         static bool printBlank = true;
         static void Main(string[] args)
         {
-            while (!GameOver)
+            while (!_gameOver)
             {
-                Console.Title = "Hangman - [TEAM 1]";
-                Console.SetCursorPosition(6, 2);
                 PrintHangman(h.getCurrentHangman()); 
                 PrintGuessesLeft(h.getNrOfGuesses()); 
                 PrintYourGuesses(h.getGuessedLetters()); 
-                Console.Write(" Message: "); // OO: flytta in till PrintMessage
-                PrintMessage(result);
-
-                // OO: Ev meted
-                Console.Write(" Enter your guess: ");
-                result = h.Guess(Console.ReadLine().ToUpper());
-                Console.Clear();
-
+                PrintMessage(result);                            
+                CollectUserInput();
                 WinOrLose(h);
             }
         }
+
+        private static void CollectUserInput()
+        {
+            Console.Write(" Enter your guess: ");
+            result = h.Guess(Console.ReadLine().ToUpper());
+            Console.Clear();
+        }
+
         // Yusri- Kan flyttas till core.
         public static bool ValidationCheck(GuessResult result)
         {
@@ -46,7 +46,7 @@ namespace Hangman
         {
             if (h.CheckWin())
             {
-                GameOver = true;
+                _gameOver = true;
                 Console.Clear();
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You win!!");
@@ -57,9 +57,9 @@ namespace Hangman
                 Console.Beep();
             }
             //Group5 - isDone is not changed from false so will always be false. it shoudld be enough with "checkLoose"
-            if ((!GameOver) && (h.CheckLoose()))
+            if ((!_gameOver) && (h.CheckLoose()))
             {
-                GameOver = true;
+                _gameOver = true;
                 Console.Clear();
                 Console.SetCursorPosition(10, 2);
                 Console.WriteLine("You lost");
@@ -81,6 +81,8 @@ namespace Hangman
 
         public static void PrintHangman(List<char> currentHangman)
         {
+            Console.Title = "Hangman - [TEAM 1]";
+            Console.SetCursorPosition(6, 2);
             foreach (var item in currentHangman)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -127,6 +129,7 @@ namespace Hangman
 
         public static void PrintMessage(GuessResult result)
         {
+            Console.Write(" Message: ");
             if (ValidationCheck(result))
             {
                 PrintInvalidMessage(result);
