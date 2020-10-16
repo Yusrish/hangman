@@ -50,6 +50,46 @@ namespace Hangman.Core.Test
             Assert.AreEqual(GuessResult.InvalidGuess, result);
         }
 
+        [TestMethod]
+        public void the_user_wins_if_hidden_word_guessed()
+        {
+            // Arrange
+            var hangman = new Hangman("KALLE", 3);
+            GuessResult result = hangman.Guess("K");
+            result = hangman.Guess("A");
+            result = hangman.Guess("L");
+            result = hangman.Guess("E");
+            bool win = hangman.HasWon();
+            // Assert
+            Assert.AreEqual(true, win);
+        }
+
+        [TestMethod]
+        public void the_user_loses_if_hidden_word_not_guessed()
+        {
+            // Arrange
+            var hangman = new Hangman("KALLE", 3);
+            GuessResult result = hangman.Guess("F");
+            result = hangman.Guess("A");
+            result = hangman.Guess("L");
+            result = hangman.Guess("E");
+            bool win = hangman.HasWon();
+            // Assert
+            Assert.AreEqual(false, win);
+        }
+
+        [TestMethod]
+        public void the_user_should_lose_if_number_of_guesses_are_more_than_limit()
+        {
+            // Arrange
+            var hangman = new Hangman("KALLE", 3);
+            GuessResult result = hangman.Guess("G");
+            result = hangman.Guess("F");
+            result = hangman.Guess("P");
+            bool win = hangman.HasLost();
+            // Assert
+            Assert.AreEqual(true, win);
+        }
         // OO: test för vinst och förslut
     }
 }

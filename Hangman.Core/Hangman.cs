@@ -26,8 +26,7 @@ namespace Hangman
         {
             return _secretWord;
         }
-        
-
+ 
         public List<char> getGuessedLetters()
         {
             return _guessedLetters;
