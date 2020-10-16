@@ -49,5 +49,7 @@ namespace Hangman.Core.Test
             // Assert
             Assert.AreEqual(GuessResult.InvalidGuess, result);
         }
+
+        // OO: test för vinst och förslut
     }
 }

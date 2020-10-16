@@ -11,7 +11,7 @@ namespace Hangman
         private List<char> _guessedLetters = new List<char>();
         private List<char> _currentHangman = new List<char>();
         private char parsedGuess;
-        public string guess;
+        //public string guess;
 
         public Hangman(string secretWord, int nrOfGuesses)
         {
@@ -21,6 +21,7 @@ namespace Hangman
             CreateCurrentHangman();
         }
 
+        // OO: public string SecretWord { get; }
         public string getSecretWord()
         {
             return _secretWord;
@@ -41,6 +42,7 @@ namespace Hangman
             return _currentHangman;
         }
 
+        // OO: Namngivning
         //Group5- CreateHangman. we think that it should be private and be called from the constructor
         public void CreateCurrentHangman()   
         {
@@ -99,6 +101,8 @@ namespace Hangman
             return true;
         }
 
+
+        // OO: e.g "HasWon"
         public bool CheckWin()
         {
             if (!_currentHangman.Contains('_'))

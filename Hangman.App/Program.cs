@@ -5,7 +5,7 @@ namespace Hangman
 {
     class Program
     {
-        static bool GameOver = false;
+        static bool GameOver = false; // OO: _gameOver
         static GuessResult result;
         static Hangman h = new Hangman("MAMMAS", 6);
         static bool printBlank = true;
@@ -18,11 +18,14 @@ namespace Hangman
                 PrintHangman(h.getCurrentHangman()); 
                 PrintGuessesLeft(h.getNrOfGuesses()); 
                 PrintYourGuesses(h.getGuessedLetters()); 
-                Console.Write(" Message: ");
+                Console.Write(" Message: "); // OO: flytta in till PrintMessage
                 PrintMessage(result);
+
+                // OO: Ev meted
                 Console.Write(" Enter your guess: ");
                 result = h.Guess(Console.ReadLine().ToUpper());
                 Console.Clear();
+
                 WinOrLose(h);
             }
         }
